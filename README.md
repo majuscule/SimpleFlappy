@@ -4,31 +4,36 @@ Simple Flappy Bird Sample for Cocos2d-x v3.0
 Get Cocos2d-x
 -------------
 
-Download from http://www.cocos2d-x.org/download, or clone the repo:
+Download here http://www.cocos2d-x.org/download or clone the repo:
 
 ```shell
 $ git clone https://github.com/cocos2d-x/plugin-x.git
 ```
 
-Create a new project
+Create the project
 -------------
 
 ```shell
 $ ./tools/cocos2d-console/bin/cocos new -p PACKAGE_NAME -d DIRECTORY -l cpp PROJECT_NAME
+$ cp Classes/* DIRECTORY/PROJECT_NAME/Classes
+$ cp Resources/* DIRECTORY/PROJECT_NAME/Resources
 ```
+
 
 iOS build
 -------------
 
 + Open DIRECTORY/PROJECT_NAME/proj.ios_mac/PROJECT_NAME.xcodeproj/
-+ Copy Classes and Resources folders to DIRECTORY/PROJECT_NAME
-+ Import all new files in Classes and Resources folder
++ Import all new files in the Classes and Resources folder
 + Change Device Orientation to Portrait
 + Build & Run
 
 
 Android build
 -------------
+
++ Edit DIRECTORY/PROJECT_NAME/proj.android/jni/Android.mk: replace "HelloWorldScene.cpp" with "GameScene.cpp"
++ Edit DIRECTORY/PROJECT_NAME/proj.android/AndroidManifest.xml: replace "landscape" with "portrait"
 
 ```shell
 $ cd DIRECTORY/PROJECT_NAME/proj.android
