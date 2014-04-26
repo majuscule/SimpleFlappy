@@ -28,27 +28,27 @@ bool GameScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     
     // add pipes layer
-    m_pipes = Sprite::create();
+    m_pipes = Node::create();
     this->addChild(m_pipes);
     
     // add ground
     m_ground = Sprite::create("ground.png");
     auto groundSize = m_ground->getContentSize();
-    m_ground->setPosition(Point(visibleSize.width/2,
-                              groundSize.height/2));
+    m_ground->setPosition(visibleSize.width/2, groundSize.height/2);
+    
     auto groundBody = PhysicsBody::createBox(groundSize);
-    groundBody->setContactTestBitmask(true);
-    m_ground->setPhysicsBody(groundBody);
+    groundBody->setContactTestBitmask(1);
     groundBody->setDynamic(false);
+    
+    m_ground->setPhysicsBody(groundBody);
     this->addChild(m_ground, 0);
     
     
     // add start label
     auto label = LabelTTF::create("Start", "Arial", 48);
-    auto item = MenuItemLabel::create(label,
-                                      CC_CALLBACK_1(GameScene::startGame, this));
-	item->setPosition(Point(visibleSize.width/2,
-                               visibleSize.height/2));
+    auto item = MenuItemLabel::create(label, CC_CALLBACK_1(GameScene::startGame, this));
+	item->setPosition(visibleSize.width/2,visibleSize.height/2);
+    
     m_start = Menu::create(item, NULL);
     m_start->setPosition(Point::ZERO);
     this->addChild(m_start, 1);
@@ -65,7 +65,7 @@ bool GameScene::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
     // schedule updating pipes
-    this->schedule(schedule_selector(GameScene::runPipes), 0.01f);
+    this->scheduleUpdate();
     
     return true;
 }
@@ -81,12 +81,9 @@ void GameScene::startGame(Ref* pSender)
     // hide start and add bird
     m_start->setVisible(false);
     this->addBird();
-    
-    // start updating pipes
-    this->scheduleUpdate();
 }
 
-
+// Touch screen
 bool GameScene::onTouchBegan(Touch *touch, Event *unused_event)
 {
     if (m_flying)
@@ -99,8 +96,8 @@ void GameScene::addBird()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     m_bird = Sprite::create("bird.png");
     auto birdSize = m_bird->getContentSize();
-    m_bird->setPosition(Point(visibleSize.width/2,
-                              visibleSize.height/2));
+    m_bird->setPosition(visibleSize.width/2,visibleSize.height/2);
+    
     auto birdBody = PhysicsBody::createCircle(birdSize.width/2);
     birdBody->setContactTestBitmask(true);
     birdBody->setLinearDamping(0.0f);
@@ -110,7 +107,7 @@ void GameScene::addBird()
     this->addChild(m_bird, 0);
 }
 
-void GameScene::runPipes(float time)
+void GameScene::update(float dt)
 {
     if (m_flying == false) return;
 
@@ -118,16 +115,17 @@ void GameScene::runPipes(float time)
     int space = 250;
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
-    cocos2d::Node * last = NULL;
+    cocos2d::Node* last = NULL;
     
     // slide and check the current pipes
-    Vector< Node * > & pipes = m_pipes->getChildren();
+    Vector<Node*>& pipes = m_pipes->getChildren();
     for (auto p : pipes)
     {
-        if (p->getPositionX()+space<0)
+        if (p->getPositionX() + space < 0)
             p->removeFromParent();
-        else {
-            p->setPositionX(p->getPositionX()-3);
+        else
+        {
+            p->setPositionX(p->getPositionX()- 200 * dt);
             last = p;
         }
     }
@@ -172,7 +170,7 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
     m_bird->getPhysicsBody()->setVelocity(Vect(-50,50));
     
     m_start->setVisible(true);
-    this->unscheduleUpdate();
+    
     return true;
 }
 
