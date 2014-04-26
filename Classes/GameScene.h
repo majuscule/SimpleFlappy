@@ -24,7 +24,7 @@ private:
     cocos2d::PhysicsWorld* m_world;
     cocos2d::Sprite* m_ground;
     cocos2d::Sprite* m_bird;
-    cocos2d::Sprite* m_pipes;
+    cocos2d::Node* m_pipes;
     cocos2d::Menu* m_start;
     
     bool m_flying = false;
@@ -32,7 +32,7 @@ private:
     void addBird();
     void startGame(Ref* pSender);
     
-    void runPipes(float time);
+    void update(float dt);
     void addPipe(cocos2d::Sprite*pipe, int x, int y);
     
     virtual bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event);
