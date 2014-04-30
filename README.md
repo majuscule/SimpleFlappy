@@ -7,7 +7,7 @@ Get Cocos2d-x
 Download here http://www.cocos2d-x.org/download or clone the repo:
 
 ```shell
-$ git clone https://github.com/cocos2d-x/plugin-x.git
+$ git clone https://github.com/cocos2d/cocos2d-x.git
 ```
 
 Create the project
