@@ -26,6 +26,9 @@ private:
     cocos2d::Sprite* m_bird;
     cocos2d::Node* m_pipes;
     cocos2d::Menu* m_start;
+    cocos2d::Label* m_score_label;
+    
+    int m_score;
     
     bool m_flying = false;
     

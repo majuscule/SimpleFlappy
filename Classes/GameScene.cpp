@@ -45,14 +45,18 @@ bool GameScene::init()
     
     
     // add start label
-    auto label = LabelTTF::create("Start", "Arial", 48);
-    auto item = MenuItemLabel::create(label, CC_CALLBACK_1(GameScene::startGame, this));
-	item->setPosition(visibleSize.width/2,visibleSize.height/2);
+    auto startLabel = LabelTTF::create("Start", "Arial", 48);
+    auto startItem = MenuItemLabel::create(startLabel, CC_CALLBACK_1(GameScene::startGame, this));
+    startItem->setPosition(visibleSize.width/2,visibleSize.height/2);
     
-    m_start = Menu::create(item, NULL);
+    m_start = Menu::create(startItem, NULL);
     m_start->setPosition(Point::ZERO);
     this->addChild(m_start, 1);
-    
+
+    // add score label
+    m_score_label = Label::create("0", "Arial", 48);
+    m_score_label->setPosition(50,visibleSize.height-30);
+    this->addChild(m_score_label, 1);
     
     // add touch listner
     auto touchListener = EventListenerTouchOneByOne::create();
@@ -73,6 +77,7 @@ bool GameScene::init()
 void GameScene::startGame(Ref* pSender)
 {
     m_flying = true;
+    m_score = 0;
     
     // clear from the previous run;
     if (m_bird != NULL) m_bird->removeFromParent();
@@ -110,6 +115,8 @@ void GameScene::addBird()
 void GameScene::update(float dt)
 {
     if (m_flying == false) return;
+    
+    m_score_label->setString(std::to_string(++m_score));
 
     // spacing between two pipes
     int space = 250;
